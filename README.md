@@ -8,6 +8,9 @@ This project tries to grasp political content on a bunch of tweets, which neednd
 In this repository you can find all the source code and sources for the project, except the paper, which is not made public yet.
 Folder `src/` contains the source code and in top level you can find 2 scripts: `test.py`and `train.py`. Another file, which should not be directly changed is called "bestestimators.txt", a file containing info on the best found hyperparameters for every estimator used in the model.
 ## Installation and running instructions
+The project uses 3 datasets, 2 of them are a choice of which tweets to use as source for the experiments. One is called "Hillary's dataset" and the other is "Tweepy dataset". The first one comes from the stance detection task from [TweetEval 2020](https://github.com/cardiffnlp/tweeteval) paper. And the other is a corpus of tweets extracted using the [Tweepy](https://www.tweepy.org/) library. You can reload that corpus of tweets, but not enlarge it, unless doing so manually putting tweets in the 'corpus/' folder respecting the conventions of the other tweets.
+The other dataset is fixed. It is the "state_union" corpus from [NLTK](https://www.nltk.org/), used as a reference for political statement keywords. You can specify how many keywords to use, how many documents to gather from that corpus, etc.
+After that necessary introduction, these are the general instructions for running the project:
 - Download/clone the repository
 - Run `test.py` or `train.py`depending on what you are going to do. This is the helping `python3 test.py -h` output as a tutorial on how to use the command:
 ```console
@@ -43,4 +46,4 @@ optional arguments:
                         Specify proportion of tweets to keep in the keyword
                         filter
 ```
-- 
+- Instructions for `test.py`:
