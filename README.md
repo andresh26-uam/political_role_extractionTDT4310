@@ -10,7 +10,8 @@ Folder `src/` contains the source code and in top level you can find 2 scripts: 
 ## Installation and running instructions
 - Download/clone the repository
 - Run `test.py` or `train.py`depending on what you are going to do. This is the helping `python3 test.py -h` output as a tutorial on how to use the command:
-> python3 train.py -h
+```console
+foo@bar:~$ python3 train.py -h
 > usage: train.py [-h] [--use_hillary USE_HILLARY]
                 [--reload_tweet_corpus RELOAD_TWEET_CORPUS]
                 [--stdocs [STDOCS]] [--random_state [RANDOM_STATE]]
@@ -41,4 +42,6 @@ optional arguments:
   --keyw_retain [KEYW_RETAIN]
                         Specify proportion of tweets to keep in the keyword
                         filter
+```
+> 
 - 
