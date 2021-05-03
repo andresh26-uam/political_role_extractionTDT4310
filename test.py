@@ -1,4 +1,6 @@
+from typing import List
 import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
 from src.cleaning import clean_data_set, preprocess_tweet
 from src import HILLARY_LABEL_MAPPING, LAST_ARGS_ROUTE, \
     MAX_TWEEPY_TWEETS, TRAINED_CLUSTERER_ROUTE, \
@@ -14,32 +16,49 @@ from train import keyword_filter
 from nltk.corpus import state_union
 
 
-def run_test(all_test, keywords_to_match, tfidf, mapping,
-             labeled, random_st=42, do_plot=True):
+def run_test(all_test: List[dict], keywords_to_match: List[str],
+             tfidf: TfidfVectorizer, mapping: dict,
+             labeled: bool, random_st=42, do_plot=True):
+    """This function implements the whole testing architecture
+    workflow: cleaning, preprocessing, topic modelling, keyword
+    filtering, clustering and summarizing
+
+    Args:
+        all_test (List[dict]): Tweets in original dict format
+        keywords_to_match (List[str]): List of keywords already
+            extracted
+        tfidf (TfIdfVectorizer): Vectorizer
+        mapping (dict): Mapping of optional labels
+        labeled (bool): Signals whether to use the labeled data
+            or not
+        random_st (int, optional): Seed. Defaults to 42.
+        do_plot (bool, optional): whether to plot
+            intermediate results. Defaults to True.
+    """
     print("Cleaning tweets...")
     all_test_cl = clean_data_set(all_test)
-    print("Done")
+    print("Done.")
     print("Vectorizing tweets...")
     all_test_pp = [preprocess_tweet(t['text']) for t in all_test_cl]
 
     all_test_t = tfidf.transform(all_test_pp)
-    print("Done")
+    print("Done.")
     print("Topic Modelling...")
     model, topiqued_test, topics = topic_modelling(
         all_test_t,
         tfidf, len(keywords_to_match),
         retrain=False, plot=do_plot)
-    print("Done")
+    print("Done.")
     print("Keyword filtering...")
     topiqued_test, all_test_cl, all_test_t = keyword_filter(
         topiqued_test, all_test_cl, all_test_t,
         keywords_to_match, topics, n_keywords, tfidf, retain=retain_arg)
-    print("Done")
+    print("Done.")
     print("Clusterinzing...")
     clusterer, clusterized_dataframe, clusters = clusterize(
         all_test_cl, all_test_t, retrain=False,
         random_st=random_st, plot=do_plot)
-    print("Done")
+    print("Done.")
 
     summarize_clusters(clusterized_dataframe, clusters,
                        tfidf, mapping, labeled)

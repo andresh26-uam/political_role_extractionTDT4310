@@ -1,5 +1,5 @@
 # %%
-from src.utils import add_arguments, bestestimators_reader, showclusters
+from src.utils import add_arguments, bestestimators_reader
 from src.topicmodel import TRAIN_PARAM_GRID_LDA, topic_modelling
 from typing import Any, Iterable, List
 import joblib
@@ -170,13 +170,20 @@ if __name__ == "__main__":
     else:
         print("Reading Tweepy Corpus... ")
         all_data, all_test = corpus.read_corpus()
+    print("Done.")
     # and clean the returned tweets
+    print("Cleaning tweets...")
     all_data = clean_data_set(all_data)
     # Preprocessing
+    print("Done.")
+    print("Vectorizing tweets...")
     all_data_pp = [preprocess_tweet(t['text']) for t in all_data]
     # TF-IDF transform
     all_data_t = tfidf.fit_transform(all_data_pp)
+    print("Done.")
+    print("Saving Vectorizer for testing...")
     joblib.dump(tfidf, TRAINED_TFIDF_ROUTE)
+    print("Done.")
     # I will use now LDA (Latent Dirichlet Allocation) to identify
     # topics of the tweets.
     # Then, clusterize the documents filtered by the frequency of use of
@@ -184,23 +191,24 @@ if __name__ == "__main__":
     # See the keyword_filter function that does the job.
     # https://www.youtube.com/watch?v=BuMu-bdoVrU
     # http://ai.stanford.edu/~ang/papers/jair03-lda.pdf
-
+    print("Topic Modelling...")
     lda_model, all_data_tocluster, topics = topic_modelling(
         all_data_t, tfidf, n_keywords, param_grid=param_lda,
         retrain=True, plot=plot_arg,
         random_seed=random_st)
-
+    print("Done.")
     # Get the most interesting topiqued documents according to our political
     # keywords as a whole:
+    print("Keyword filtering...")
     all_data_tocluster, all_data, all_data_t = keyword_filter(
         all_data_tocluster, all_data, all_data_t,
         keywords_to_match, topics, n_keywords, tfidf, retain=retain_arg)
-
+    print("Done.")
+    print("Clusterinzing...")
     clusterer, data_preprocessed_nooutlier, clusters = clusterize(
         all_data, all_data_t, random_st=random_st,
-        param_grid=param_clust, retrain=True)
-
-    showclusters(data_preprocessed_nooutlier)
+        param_grid=param_clust, retrain=True, plot=plot_arg)
+    print("Done.")
 
     print("Final Silhouette Score\n: ",
           silhouette_score(

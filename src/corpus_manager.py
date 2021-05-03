@@ -97,7 +97,7 @@ class TweetCorpus():
                 """%20-is%3Anull_cast%20-is%3Aquote%20-is%3Aretweet%20-is%3Averified%20-is%3Areply%20-has%3Ahashtags%20-has%3Amentions%20-has%3Amedia"""
 
             iter = Cursor(api.search, q=query, lang="en",
-                          result_type="mixed", tweet_mode="extended",
+                          result_type="popular", tweet_mode="extended",
                           include_retweets=False
                           ).items(self.n_tweets//len(self.keywords))
 

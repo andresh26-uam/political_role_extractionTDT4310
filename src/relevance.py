@@ -16,8 +16,8 @@ def relevance_score(tweet: str, max_score: float) -> float:
     Returns:
         float: Relevance (social importance of the tweets list)
     """
-    return ((tweet['likes']+tweet['rts'])*tweet['foll']/max_score)*(
-        (TextBlob(tweet['text']).subjectivity)**5)
+    return ((tweet['likes']+tweet['rts'])*tweet['foll']/(max_score*32))*(
+        (1+TextBlob(tweet['text']).subjectivity)**5)
 
 
 def representatives(tweets: list, n: int, tfidf: TfidfVectorizer) -> list:

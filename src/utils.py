@@ -1,5 +1,6 @@
 
 
+from typing import Tuple
 from pandas.core.frame import DataFrame
 from sklearn.decomposition import LatentDirichletAllocation
 import seaborn
@@ -100,7 +101,21 @@ def plot_top_words(model: LatentDirichletAllocation,
     plt.show()
 
 
-def bestestimators_reader():
+def bestestimators_reader() -> Tuple[dict, dict]:
+    """Reads the file bestestimators.txt, to
+    retrieve the lastly calculated best hyperparameters
+    for each trainable model in the architecture.
+    Of course, this makes possible to manually assign
+    values for the models directly on bestestimators.txt
+    before the command:
+    $ python train.py -b
+    However, the intended use is just to save best Grid
+    Searched hyperparameters found in TRAINED_<model>_ROUTE's
+    (see __init__.py)
+
+    Returns:
+        Tuple[dict,dict]: Params for LDA, params for Clusterer
+    """
     with open(BEST_ESTIMATORS_ROUTE) as file:
         lines = file.readlines()
         i = 0
@@ -122,6 +137,10 @@ def bestestimators_reader():
 
 
 def add_arguments(argparser):
+    """
+    Adds arguments to the argparser specified (used for the
+    humonguous set of main arguments of test.py and train.py)
+    """
     argparser.add_argument('--use_last_args', '-l', dest='use_last_args',
                            action='store_true',
                            help="""If specified, last args from last

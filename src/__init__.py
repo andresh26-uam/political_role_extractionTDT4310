@@ -19,15 +19,15 @@ DEFAULT_KEYWORD_FILTER_KEEP = 0.33
 DEFAULT_N_WORDS_SUMMARIES = 140
 
 TRAINED_CLUSTERER_ROUTE = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "../trained_clusterer.pkl")
+    os.path.abspath(__file__)), "../pkl/trained_clusterer.pkl")
 TRAINED_LDA_ROUTE = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "../trained_lda.pkl")
+    os.path.abspath(__file__)), "../pkl/trained_lda.pkl")
 TRAINED_TFIDF_ROUTE = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "../trained_tfidf.pkl")
+    os.path.abspath(__file__)), "../pkl/trained_tfidf.pkl")
 KEYWORDS_ROUTE = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "../keywords.pkl")
+    os.path.abspath(__file__)), "../pkl/keywords.pkl")
 LAST_ARGS_ROUTE = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), "../args.pkl")
+    os.path.abspath(__file__)), "../pkl/args.pkl")
 BEST_ESTIMATORS_ROUTE = os.path.join(os.path.dirname(
             os.path.abspath(__file__)), "../bestestimators.txt")
 HILLARY_LABEL_MAPPING = {'0': 'neutral', '1': 'against', '2': 'favor'}

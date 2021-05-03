@@ -26,7 +26,37 @@ def clusterize(all_data: List[dict], all_data_t: List[List[float]],
                param_grid=TRAIN_PARAM_GRID_CLUSTERER,
                plot=False,
                random_st=42) -> Tuple[BaseEstimator, pd.DataFrame, List[List]]:
+    """Clusterizes the input tweets, outputing them in original form with
+    cluster label (see added 'predicted_cluster' key) and the clusters
+    in matrix form, where each row corresponds to the assigned probability
+    distribution of the cluster labels where the tweet is classified).
+    First argument, on the first hand, is
+    the newly trained (or read, depending on "retrain" argument supplied)
+    clustering model, which uses KPCA and Kmeans. You can change the training
+    parameters in __init__.py on this folder. Also, if you run
+    $ python train.py -b
+    the best estimators will be used in the 'param_grid' argument instead of
+    the default training parameters (TRAIN_PARAM_GRID_CLUSTERER in __init__.py)
 
+    Args:
+        all_data (List[dict]): Cleaned tweets in dict format
+        all_data_t (List[List[float]]): Vectorization of tweets
+        retrain (bool, optional): If True, trains a newly created
+        model with the GridSearch parameters told in 'param_grid'.
+            Otherwise, a model is read from TRAINED_CLUSTERER_ROUTE
+            (found in __init__.py as well). Defaults to False.
+        param_grid (dict, optional): Dictionary of hyperparameters to tune
+            in the training process. Ignored when 'retrain==False'.
+            Defaults to TRAIN_PARAM_GRID_CLUSTERER.
+        plot (bool, optional): Whether to plot the clusters
+            after training/reading the model. Defaults to False.
+        random_st (int, optional): Random seed. Defaults to 42.
+
+    Returns:
+        Tuple[BaseEstimator, pd.DataFrame, List[List]]: clusterer trained,
+            dataframe with original tweets with 'predicted_cluster' label,
+            vector of prob. distribution of tweets over labels.
+    """
     if retrain:
 
         # https://stackoverflow.com/questions/53556359/selecting-kernel-and-hyperparameters-for-kernel-pca-reduction
