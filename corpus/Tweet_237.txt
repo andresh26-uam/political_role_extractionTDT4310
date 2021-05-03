@@ -1,0 +1,1 @@
+{"text": "SpaceX to Dragon: \"We welcome you back to planet Earth and thanks for flying SpaceX. For those of you enrolled in our frequent flyer program, you've earned 68 million miles on this voyage.\"", "user": 560196769, "likes": 0, "rts": 405, "foll": 291, "id": 1388924574079885314}

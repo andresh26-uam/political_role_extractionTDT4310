@@ -1,0 +1,1 @@
+{"text": "HAPPY\n- glad\n- pleased\n- cheerful\n- contented\n- in a good mood\n\nVERY HAPPY\n- delighted\n- thrilled\n- overjoyed\n- blissful\n- ecstatic\n- elated\n- over the moon\n- on cloud nine\n- on top of the world", "user": 795455017557716992, "likes": 0, "rts": 183, "foll": 497, "id": 1388443028914794503}

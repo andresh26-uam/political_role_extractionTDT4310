@@ -1,0 +1,1 @@
+{"text": "Uttar Pradesh reports 30,983 fresh COVID-19 cases (out of 2,97,021 tests), 36,650 recoveries, and 290 deaths in the last 24 hours, as per State Health Department\n\nTotal cases: 13,13,361\nTotal recoveries: 10,04,447\nActive cases: 2,95,752\nDeath toll: 13,162", "user": 1240019568203976704, "likes": 0, "rts": 103, "foll": 55, "id": 1388924704161816576}

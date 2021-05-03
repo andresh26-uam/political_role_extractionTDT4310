@@ -1,0 +1,1 @@
+{"text": "CNN: 575,000 people in the United States have died from coronavirus.", "user": 829746684192120832, "likes": 0, "rts": 245, "foll": 311, "id": 1388336856773718019}
