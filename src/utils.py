@@ -143,58 +143,58 @@ def add_arguments(argparser):
     """
     argparser.add_argument('--use_last_args', '-l', dest='use_last_args',
                            action='store_true',
-                           help="""If specified, last args from last
-                           execution of train or test will be used instead
-                           of whatever other arguments passed""")
+                           help="""If specified, last args from last \
+execution of train or test will be used instead \
+of whatever other arguments passed""")
     argparser.add_argument('--use_hillary', '-uh', dest='use_hillary',
                            action='store_true',
-                           help="""If specified, the Hillary stance detection
-                           tweets will be used instead of the Tweepy corpus""")
+                           help="""If specified, the Hillary stance detection \
+tweets will be used instead of the Tweepy corpus""")
     argparser.add_argument('--reload_tweet_corpus', '-r',
                            dest='reload_tweet_corpus',
                            action='store_true',
-                           help="""If specified, the Tweepy corpus
-                            will be regenerated
-                            (deleted and refilled with new tweets)""")
+                           help="""If specified, the Tweepy corpus \
+will be regenerated\
+(deleted and refilled with new tweets)""")
     argparser.add_argument('--add_tweets', '-a',
                            dest='add_tweets',
                            action='store_true',
-                           help="""If specified, the Tweepy corpus
-                            will be enlarged as much as possible
-                            (filled with new tweets)""")
+                           help="""If specified, the Tweepy corpus \
+will be enlarged as much as possible\
+(filled with new tweets)""")
     argparser.add_argument('--stdocs', '-std', nargs='?', type=int,
                            default=DEFAULT_N_STDOCS,
-                           help="""Declares how many documents from
-                            state_union corpus to be selected for the
-                            keyword extraction""")
+                           help="""Declares how many documents from \
+state_union corpus to be selected for the \
+keyword extraction""")
     argparser.add_argument('--random_state', '-rds', nargs='?', type=int,
                            default=42,
-                           help="""Random number seed, use 42
-                           to replicate the experiments""")
+                           help="""Random number seed, use 42 \
+to replicate the experiments""")
     argparser.add_argument('--n_keywords', '-k', nargs='?', type=int,
                            default=DEFAULT_N_KEYWORDS,
-                           help="""Number of keywords to be selected among
-                            the state_union corpus. If set to -1,
-                            prevously calculated keywords will be used""")
+                           help="""Number of keywords to be selected among \
+the state_union corpus. If set to -1, \
+prevously calculated keywords will be used""")
     argparser.add_argument('--sumwords', '-sw', nargs='?', type=int,
                            default=DEFAULT_N_WORDS_SUMMARIES,
-                           help="""Specify number of
-                           words per summary of a cluster""")
+                           help="""Specify number of \
+words per summary of a cluster""")
     argparser.add_argument('--keyw_retain', '-kretain', nargs='?', type=float,
                            default=DEFAULT_KEYWORD_FILTER_KEEP,
-                           help="""Specify proportion of tweets
-                           to keep in the keyword filter""")
+                           help="""Specify proportion of tweets \
+to keep in the keyword filter""")
     argparser.add_argument('--plot', '-p', action='store_true', dest='plot',
-                           help="""Plots intermediate results
-                           (clusters, topics)""")
+                           help="""Plots intermediate results \
+(clusters, topics)""")
     argparser.add_argument('--keyw_read', '-kread', action='store_true',
                            dest='keyw_read',
-                           help="""If specified, try to read previously
-                           generated keywords instead of recalculating
-                           them from the state_union corpus""")
+                           help="""If specified, try to read previously \
+generated keywords instead of recalculating \
+them from the state_union corpus""")
     argparser.add_argument('--best_params', '-b', action='store_true',
                            dest='best_params',
-                           help="""If specified, try to read previously
-                           generated best params in {}
-                           """.format(BEST_ESTIMATORS_ROUTE))
+                           help="""If specified, try to read previously \
+generated best params in {}
+""".format(BEST_ESTIMATORS_ROUTE))
     return argparser

@@ -1,3 +1,4 @@
+from argparse import RawTextHelpFormatter
 from typing import List
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -68,19 +69,19 @@ if __name__ == "__main__":
 
     from argparse import ArgumentParser
     argparser = ArgumentParser(
-        description="""Test the model using the data specified
-         (by default the Tweepy corpus, which generalizes
-         better than Hillary's). Models are supposed to be
-         already trained. They can be found at:
-         - {} (keywords)\n
-         - {} (TF-IDF vectorizer)\n
-         - {} (LDA model)\n
-         - {} (Clusterizer: Kmeans + KPCA)\n""".format(
+        description="""Test the model using the data specified\
+(by default the Tweepy corpus, which generalizes\
+better than Hillary's).\n\tModels are supposed to be\
+already trained. They can be found at:
+         - {} (keywords)
+         - {} (TF-IDF vectorizer)
+         - {} (LDA model)
+         - {} (Clusterizer: Kmeans + KPCA)""".format(
             KEYWORDS_ROUTE,
             TRAINED_TFIDF_ROUTE,
             TRAINED_LDA_ROUTE,
             TRAINED_CLUSTERER_ROUTE
-        ))
+        ), formatter_class=RawTextHelpFormatter)
     argparser = add_arguments(argparser)
 
     args = argparser.parse_args()

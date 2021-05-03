@@ -1,4 +1,5 @@
 # %%
+from argparse import RawTextHelpFormatter
 from src.utils import add_arguments, bestestimators_reader
 from src.topicmodel import TRAIN_PARAM_GRID_LDA, topic_modelling
 from typing import Any, Iterable, List
@@ -104,18 +105,19 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
 
     argparser = ArgumentParser(
-        description="""Train the model using the data specified
-         (by default the Tweepy corpus, which generalizes
-         better than Hillary's). Trained models are overriden in
-         these locations:
-         - {} (keywords)\n
-         - {} (TF-IDF vectorizer)\n
-         - {} (LDA model)\n
-         - {} (Clusterizer: Kmeans + KPCA)\n""".format(
+        description="""Train the model using the data specified\
+(by default the Tweepy corpus, which generalizes\
+better than Hillary's).\n\tTrained models are overriden in\
+these locations:
+         - {} (keywords)
+         - {} (TF-IDF vectorizer)
+         - {} (LDA model)
+         - {} (Clusterizer: Kmeans + KPCA)
+         """.format(
             KEYWORDS_ROUTE,
             TRAINED_TFIDF_ROUTE,
             TRAINED_LDA_ROUTE,
-            TRAINED_CLUSTERER_ROUTE))
+            TRAINED_CLUSTERER_ROUTE), formatter_class=RawTextHelpFormatter)
     argparser = add_arguments(argparser)
 
     args = argparser.parse_args()
