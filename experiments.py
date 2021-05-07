@@ -98,7 +98,7 @@ def draw_scores(X, Y, scores, experiment_name="Experiment"):
                             Ys[k].append(summ_data[1][k])
 
                 pos = -1
-                plt.figure()
+                plt.figure(figsize=(20, 15))
                 for label in Ys.keys():
                     X_axis = np.arange(len(X_clusters))
 
