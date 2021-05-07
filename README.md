@@ -62,4 +62,8 @@ optional arguments:
   try_keywords = np.array([10, 20, 30, 40, 50]) # K
   try_kretain = np.array([0.1, 0.25, 0.5, 0.75, 0.9]) # b
 ```
-- If experiments are recently done (repository is already with the paper experiment results saved), you can run the script with no arguments to redraw the plots and print out the summaries (these are not supplied when cloning this repo, so run [experiments.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/experiments.py) when you download the github repository to see the results).
+- If experiments are recently done (repository is already with the paper experiment results saved), you can run the script with no arguments to redraw the plots and print out the summaries. The summaries are not supplied in the repository, so it is advised to run:
+```console
+foo@bar:~$ python3 experiments.py > summaries.txt
+```
+to get them.
