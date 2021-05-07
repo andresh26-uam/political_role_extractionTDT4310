@@ -12,8 +12,8 @@ The project uses 3 datasets, 2 of them are a choice of which tweets to use as so
 The other dataset is fixed. It is the "state_union" corpus from [NLTK](https://www.nltk.org/), used as a reference for political statement keywords. You can specify how many keywords to use, how many documents to gather from that corpus, etc.
 After that necessary introduction, these are the general instructions for running the project:
 - Download/clone the repository
-- Check the configurations available in the file [src/__init__.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/src/__init__.py)
-- Run `test.py` or `train.py`depending on what you are going to do with the model. This is the helping `python3 train.py -h` output as a tutorial on how to use the command:
+- Check the configurations available in the file [src/__init__.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/src/__init__.py)
+- Run `test.py` ([src/clustering.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/train.py)) or `train.py` ([src/clustering.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/test.py)) depending on what you are going to do with the model. This is the helping `python3 train.py -h` output as a tutorial on how to use the command:
 ```console
 foo@bar:~$ python3 train.py -h
 usage: train.py [-h] [--use_last_args] [--use_hillary] [--reload_tweet_corpus]
@@ -54,4 +54,4 @@ optional arguments:
   --best_params, -b     If specified, try to read previously generated best params in /home/andres/NTNU/NLP/PROJECT/political_role_extractionTDT4310/src/../bestestimators.txt
 ```
 - To run `test.py`, it is mandatory having previously executed `train.py`, as this last script makes some files and models trained to testing. After one execution of `train.py`, several `test.py` can be run over the same trained models. 
-- Testing is very fast, normally, but training might take a lot of time depending mainly on the parameter grids supplied in the files [src/topicmodel.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/src/topicmodel.py) and [src/clustering.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/src/clustering.py)
+- Testing is very fast, normally, but training might take a lot of time depending mainly on the parameter grids supplied in the files [src/topicmodel.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/src/topicmodel.py) and [src/clustering.py](https://github.com/andresh26-uam/political_role_extractionTDT4310/tree/main/src/clustering.py)
