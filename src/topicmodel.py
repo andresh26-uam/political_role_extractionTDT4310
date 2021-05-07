@@ -5,14 +5,15 @@ from sklearn.base import BaseEstimator
 from sklearn.decomposition import LatentDirichletAllocation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import GridSearchCV
-from src import LDA_MAXITER, TRAINED_LDA_ROUTE
+from src import COHERENCE, LAST_SCORES_ROUTE, LDA_MAXITER,\
+    PERPLEXITY, SCORE_NAMES, TRAINED_LDA_ROUTE
 from src.metrics import lda_scorer
 from src.utils import plot_top_words, print_best_params
-TRAIN_PARAM_GRID_LDA = {'n_components': [10, 15, 20, 30],
+TRAIN_PARAM_GRID_LDA = {'n_components': [3, 4,6,8,12],
                         'doc_topic_prior':
-                            [0.05, 0.1, 0.2, 0.33, 0.5, 0.75, 0.95],
+                            [0.05, 0.25, 0.5, 0.75, 0.95],
                         'topic_word_prior':
-                            [0.05, 0.1, 0.2, 0.33, 0.5, 0.75, 0.95]}
+                            [0.05, 0.25, 0.5, 0.75, 0.95]}
 
 
 def topic_modelling(all_data_t: List[List[float]],
@@ -67,7 +68,7 @@ def topic_modelling(all_data_t: List[List[float]],
             param_grid=param_args,
             scoring=lambda est, X: lda_scorer(
                 est, X, n_keywords, tfidf),
-            refit='coherence')
+            refit='coherence', n_jobs=-1,cv=3)
         r = model.fit(all_data_t)
         print_best_params(r, "LDA model")
         lda_model = r.best_estimator_
@@ -77,13 +78,18 @@ def topic_modelling(all_data_t: List[List[float]],
 
     n_top_words = n_keywords
     print("Example of a tweet-topic distribution")
-    print(str(lda_model.transform(all_data_t[0])))
+    print(str(lda_model.transform(all_data_t[1])))
     if plot:
         print("Plotting topics... (close window to continue)")
         plot_top_words(lda_model, tf_feature_names,
                        n_top_words, 'Topics in LDA model')
         print("Done.")
-
+    with open(LAST_SCORES_ROUTE, "a+") as f:
+        result = lda_scorer(lda_model, all_data_t, n_keywords, tfidf)
+        print(SCORE_NAMES[COHERENCE], file=f)
+        print(str(result['coherence']), file=f)
+        print(SCORE_NAMES[PERPLEXITY], file=f)
+        print(str(result['perp']), file=f)
     topic_word_dist = lda_model.components_
     # Clusterize into classes
     # Matrix of documents (rows) with its topic probability (columns):

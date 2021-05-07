@@ -19,7 +19,9 @@ from src.corpus_manager import TweetCorpus
 
 from src.pretrained import keyword_extraction, summarize_clusters
 from nltk.corpus import state_union
-from src import HILLARY_LABEL_MAPPING, LAST_ARGS_ROUTE, \
+from src import BEST_ESTIMATORS_ROUTE, DEFAULT_KEYWORD_FILTER_KEEP,\
+    HILLARY_LABEL_MAPPING,\
+    LAST_ARGS_ROUTE, LAST_SCORES_ROUTE, \
     MAX_TWEEPY_TWEETS, N_FEATURES, TRAINED_CLUSTERER_ROUTE, \
     TRAINED_TFIDF_ROUTE, TRAINED_LDA_ROUTE, KEYWORDS_ROUTE
 
@@ -48,7 +50,7 @@ def calculate_score(imp: list, dats: list) -> float:
 def keyword_filter(data: List[List[float]], tweets: List[dict],
                    tweets_vectorized: List[List[Any]], keys: Iterable,
                    topics: list, n_keywords: int,
-                   tfidf: TfidfVectorizer, retain=0.2):
+                   tfidf: TfidfVectorizer, retain=DEFAULT_KEYWORD_FILTER_KEEP):
     """This function selects the 'retain' proportion of tweets
     having the biggest 'keyword score' which is a proposed
     measure of the significance of a tweet given a set of keywords
@@ -66,7 +68,7 @@ def keyword_filter(data: List[List[float]], tweets: List[dict],
         topics (list): Topics (LDAmodel.components_)
         tfidf (TfidfVectorizer): TF-IDF vectorizer
         retain (float, optional): Proportion of tweets to keep.
-        Defaults to 0.2.
+        Defaults to DEFAULT_KEYWORD_FILTER_KEEP (found in __init__.py).
 
     Returns:
         tuple(list, list, list): Tuple of:
@@ -143,13 +145,7 @@ these locations:
                             stop_words='english')
     demoji.download_codes()  # DO THIS only FIRST TIME EXECUTING
 
-    # This file saves the hyperparameter selection.
-    # After training, it is overriden with better values
-    # Use it with the test.py file command
-    if os.path.exists(os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "bestestimators.txt")):
-        os.remove(os.path.join(os.path.dirname(
-            os.path.abspath(__file__)), "bestestimators.txt"))
+    
     # Now we have to extract the keywords from political statements. Number of
     # keywords is a parameter useful to optimize and it is shown in graphs
     # the different coherence and silhouette scores
@@ -169,10 +165,20 @@ these locations:
     if big_corpus:
         print("Reading Hillary Corpus... ")
         all_data, all_test = corpus.read_big_corpus()
+        all_data = all_data+all_test # with Hillary we don't bother here
+
     else:
         print("Reading Tweepy Corpus... ")
-        all_data, all_test = corpus.read_corpus()
+        all_data, all_test = corpus.read_corpus(ratio_train=1-args.test_ratio)
     print("Done.")
+    # This file saves the hyperparameter selection.
+    # After training, it is overriden with better values
+    # Use it with the test.py file command
+    if os.path.exists(BEST_ESTIMATORS_ROUTE):
+        os.remove(BEST_ESTIMATORS_ROUTE)
+    if os.path.exists(LAST_SCORES_ROUTE):
+        os.remove(LAST_SCORES_ROUTE)
+    print("Best params file and last scores were deleted. Training started...")
     # and clean the returned tweets
     print("Cleaning tweets...")
     all_data = clean_data_set(all_data)
@@ -186,6 +192,7 @@ these locations:
     print("Saving Vectorizer for testing...")
     joblib.dump(tfidf, TRAINED_TFIDF_ROUTE)
     print("Done.")
+    
     # I will use now LDA (Latent Dirichlet Allocation) to identify
     # topics of the tweets.
     # Then, clusterize the documents filtered by the frequency of use of

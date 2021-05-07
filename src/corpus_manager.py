@@ -3,6 +3,7 @@ import os
 import json
 from numpy import random
 from tweepy import OAuthHandler, API, Cursor
+import tweepy
 consumer_key = "FpVCvvbgR1SPYt66b69GoTope"
 consumer_secret = "j3h6nvHvqOahtba3qZTvGyV2E3P39AkLWufblOw00mfzXql47m"
 access_token = "1352916185726246912-dfkO6DN8syQs2peUxAKjNGyg67mfs3"
@@ -87,7 +88,6 @@ class TweetCorpus():
             # In order not to repeat tweets...
             rdata, rtest = self.read_corpus()
             rdata = rdata+rtest
-            print(rdata[0])
             user_dict = set([str(tweet['id']) for tweet in rdata]).union(
                 set([str(tweet['user']) for tweet in rdata]))
         else:
@@ -95,14 +95,21 @@ class TweetCorpus():
         for k in self.keywords:
             query = str(k) + \
                 """%20-is%3Anull_cast%20-is%3Aquote%20-is%3Aretweet%20-is%3Averified%20-is%3Areply%20-has%3Ahashtags%20-has%3Amentions%20-has%3Amedia"""
+            print("Searching for tweets having: ")
+            print(query)
+            try:
+                iter = Cursor(api.search, q=query, lang="en",
+                              result_type="popular", tweet_mode="extended",
+                              include_retweets=False
+                              ).items(self.n_tweets//len(self.keywords))
 
-            iter = Cursor(api.search, q=query, lang="en",
-                          result_type="popular", tweet_mode="extended",
-                          include_retweets=False
-                          ).items(self.n_tweets//len(self.keywords))
-
-            qid, user_dict = add_tweets_to_corpus(iter, user_dict, qid)
-
+                qid_new, user_dict = add_tweets_to_corpus(iter, user_dict, qid)
+                print("Found " + str(qid_new-qid) + " new tweets")
+                qid = qid_new
+            except tweepy.TweepError as e:
+                print("Tweepy Error during search.\
+                    Aborting new tweet selection")
+                print(e)
         user_dict.clear()
         return
 

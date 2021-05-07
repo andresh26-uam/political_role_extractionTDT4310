@@ -1,11 +1,13 @@
 from argparse import RawTextHelpFormatter
+import os
 from typing import List
 import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from src.cleaning import clean_data_set, preprocess_tweet
 from src import HILLARY_LABEL_MAPPING, LAST_ARGS_ROUTE, \
     MAX_TWEEPY_TWEETS, TRAINED_CLUSTERER_ROUTE, \
-    TRAINED_TFIDF_ROUTE, TRAINED_LDA_ROUTE, KEYWORDS_ROUTE
+    TRAINED_TFIDF_ROUTE, TRAINED_LDA_ROUTE, KEYWORDS_ROUTE,\
+    LAST_SCORES_ROUTE
 from src.clustering import clusterize
 from src.corpus_manager import TweetCorpus
 
@@ -41,7 +43,8 @@ def run_test(all_test: List[dict], keywords_to_match: List[str],
     print("Done.")
     print("Vectorizing tweets...")
     all_test_pp = [preprocess_tweet(t['text']) for t in all_test_cl]
-
+    if os.path.exists(LAST_SCORES_ROUTE):
+        os.remove(LAST_SCORES_ROUTE)
     all_test_t = tfidf.transform(all_test_pp)
     print("Done.")
     print("Topic Modelling...")
@@ -113,6 +116,8 @@ already trained. They can be found at:
     if big_corpus:
         print("Reading Hillary Corpus... ")
         all_data, all_test = corpus.read_big_corpus()
+        all_test = all_data+all_test  # with Hillary we don't bother here
+
     else:
         print("Reading Tweepy Corpus... ")
         all_data, all_test = corpus.read_corpus()

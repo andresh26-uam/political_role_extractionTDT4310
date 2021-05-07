@@ -1,1 +1,1 @@
-{"text": "&lt;&lt;&lt;when you come in $155 under budget and +$700 under MSRP \ud83d\udc81\ud83c\udfff\u200d\u2642\ufe0f", "user": 1190304317196177409, "likes": 0, "rts": 0, "foll": 3, "id": 1388537331238510597}
+{"text": "#PositiveKhabar : Today, Record 248000 people have recovered from #Covid_19", "user": 353225707, "likes": 73, "rts": 27, "foll": 44499, "id": 1387121357389918216}

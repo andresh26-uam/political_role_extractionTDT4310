@@ -1,0 +1,8 @@
+LDA coherence
+-3.4146940969799315
+LDA perplexity
+-6828.688608990242
+KPCA inverse score
+-8.01167750526477e-32
+Kmeans silhouette
+0.46207397449267085

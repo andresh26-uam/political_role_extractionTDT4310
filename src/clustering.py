@@ -4,7 +4,8 @@ from sklearn.base import BaseEstimator
 from sklearn.cluster import KMeans
 from sklearn.pipeline import Pipeline
 from sklearn.decomposition import KernelPCA
-from src import TRAINED_CLUSTERER_ROUTE
+from src import INV_SCORE, LAST_SCORES_ROUTE,\
+    SCORE_NAMES, SILHOUETTE, TRAINED_CLUSTERER_ROUTE
 from src.metrics import inverse_score, silhouette_scorer
 from sklearn.model_selection import GridSearchCV
 
@@ -13,11 +14,11 @@ import joblib
 
 TRAIN_PARAM_GRID_CLUSTERER = {
     "preprocessor__gamma": [0.03, 0.05, 0.1],
-    "preprocessor__n_components": [4, 8, 16, 24],
-    "preprocessor__kernel": ["cosine", "linear"],
+    "preprocessor__n_components": [6, 8, 12, 20],
+    "preprocessor__kernel": ["cosine", "rbf", "linear"],
     "kmeans__max_iter": [100, ],
-    "kmeans__n_init": [20, 50],
-    "kmeans__n_clusters": [2, 3, 4, 6]
+    "kmeans__n_init": [50],
+    "kmeans__n_clusters": [3, 4, 5, 6]
 }
 
 
@@ -110,4 +111,13 @@ def clusterize(all_data: List[dict], all_data_t: List[List[float]],
     data_preprocessed_df["tweets"] = all_data
     if plot:
         showclusters(data_preprocessed_df)
+    with open(LAST_SCORES_ROUTE, "a+") as f:
+        print(SCORE_NAMES[INV_SCORE], file=f)
+        print(str(inverse_score(clusterer['preprocessor'],
+                                all_data_t.toarray())), file=f)
+        print(SCORE_NAMES[SILHOUETTE], file=f)
+        print(str(silhouette_scorer(
+            clusterer['kmeans'],
+            clusterer['preprocessor'].transform(
+                all_data_t.toarray()))), file=f)
     return clusterer, data_preprocessed_df, clusters

@@ -54,7 +54,7 @@ def lda_scorer(estimator: LatentDirichletAllocation, X: DataFrame,
                                        [x for x in tfidf.vocabulary_.keys()],
                                        dtype=object),
                                    return_mean=True)
-    return {'coherence': clda, 'perp': estimator.perplexity(X)}
+    return {'coherence': clda, 'perp': -estimator.perplexity(X)}
 
 
 def silhouette_scorer(estimator: KMeans, X: Iterable, y=None) -> float:

@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import GridSearchCV
 
 from src import BEST_ESTIMATORS_ROUTE, DEFAULT_KEYWORD_FILTER_KEEP, \
-    DEFAULT_N_KEYWORDS, DEFAULT_N_STDOCS, DEFAULT_N_WORDS_SUMMARIES
+    DEFAULT_N_KEYWORDS, DEFAULT_N_STDOCS,\
+    DEFAULT_N_WORDS_SUMMARIES, DEFAULT_TEST_RATIO
 
 
 def print_best_params(searchmodel: GridSearchCV, name: str) -> None:
@@ -33,22 +34,23 @@ def showclusters(data: DataFrame) -> None:
             method
     """
     plt.style.use("fivethirtyeight")
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(12, 12))
 
     scat = seaborn.scatterplot(
-        "component_1",
         "component_0",
+        "component_1",
 
         s=50,
         data=data,
         hue="predicted_cluster",
         palette="Set2",
     )
-
+    scat.set_ylabel('KPCA component 1')
+    scat.set_xlabel('KPCA component 0')
     scat.set_title(
-        "Clustering results from "
+        "Clustering results"
     )
-    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
 
     plt.show()
 
@@ -156,6 +158,10 @@ tweets will be used instead of the Tweepy corpus""")
                            help="""If specified, the Tweepy corpus \
 will be regenerated\
 (deleted and refilled with new tweets)""")
+    argparser.add_argument('--test_ratio', '-t',
+                           dest='test_ratio', nargs='?', type=float,
+                           default=DEFAULT_TEST_RATIO,
+                           help="""Test samples (ratio vs total corpus)""")
     argparser.add_argument('--add_tweets', '-a',
                            dest='add_tweets',
                            action='store_true',

@@ -1,1 +1,1 @@
-{"text": "For them, I am just a clown who imitates people and makes them laugh", "user": 1384690992847142913, "likes": 0, "rts": 0, "foll": 0, "id": 1388669047609380869}
+{"text": "If a physician is licensed in one state, that physician should be automatically licensed to practice medicine in every other state in our country. We need a federal medical licensure program. Our current barrier to telemedicine is endangering the lives of millions of Americans.", "user": 65497475, "likes": 1402, "rts": 160, "foll": 507988, "id": 1388903656636833793}

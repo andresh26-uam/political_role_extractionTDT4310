@@ -1,0 +1,4 @@
+LDA model best params:
+	{'doc_topic_prior': 0.75, 'n_components': 10, 'topic_word_prior': 0.95}
+KPCA and Kmeans best params:
+	{'kmeans__max_iter': 100, 'kmeans__n_clusters': 3, 'kmeans__n_init': 50, 'preprocessor__gamma': 0.1, 'preprocessor__kernel': 'rbf', 'preprocessor__n_components': 6}

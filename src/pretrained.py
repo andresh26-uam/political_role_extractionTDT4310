@@ -5,8 +5,9 @@ import nltk
 from pandas.core.frame import DataFrame
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
-from src import KEYWORDS_ROUTE
-from src.relevance import representatives, get_top_tweets
+from src import DEFAULT_N_WORDS_SUMMARIES, LAST_SUMMARIES_ROUTE,\
+    MIN_N_TOP_TWEETS, KEYWORDS_ROUTE, TOP_TWEETS_FILTER
+from src.relevance import get_top_tweets
 from src.relevance import max_relevance, relevance_score
 from nltk.probability import FreqDist
 
@@ -37,7 +38,8 @@ def keyword_extraction(state_union, n_keywords, ndocuments_stateunion):
                     break
                 elif inp == 'N' or inp == 'n':
                     return None
-    unions = [state_union.raw(t) for t in state_union.fileids()[
+    unions = [state_union.raw(t) for t in np.random.permutation(
+        state_union.fileids())[
         :ndocuments_stateunion]]
     # Keyword extraction using gensim 'keywords'
     ks = [only_nouns(keywords(t, words=n_keywords, split=True,
@@ -57,7 +59,8 @@ def keyword_extraction(state_union, n_keywords, ndocuments_stateunion):
 
 def summarize_clusters(dataframe_clust: DataFrame, clusters: list,
                        tfidf: TfidfVectorizer, mapping=None,
-                       labeled=False, n_words_summaries=60) -> None:
+                       labeled=False,
+                       n_words_summaries=DEFAULT_N_WORDS_SUMMARIES) -> None:
     """Summarizes the clusters made
 
     Args:
@@ -78,35 +81,50 @@ def summarize_clusters(dataframe_clust: DataFrame, clusters: list,
             explained before
         to work. Defaults to False.
     """
+    with open(LAST_SUMMARIES_ROUTE, "w+") as f:
+        pass
+    dict_summaries = dict()
     for i in range(0, len(list(set(clusters)))):
-        indexes = [j for j, e in enumerate(clusters) if e == i]
-
+        indexes = [j for j, e in enumerate(
+            dataframe_clust["predicted_cluster"]) if e == i]
+        if (len(indexes) <= 1):
+            print("No tweets of cluster ", i, "skipping...")
+            continue
         tweets_from_cluster = np.array(
             dataframe_clust["tweets"])[indexes]
+
         ms = max_relevance(tweets_from_cluster)
         tweet_w_score = [(t, relevance_score(t, ms))
                          for t in tweets_from_cluster]
-        top_tweets = representatives(
-            get_top_tweets(tweet_w_score, max(
-                len(tweets_from_cluster), 0.33*len(tweets_from_cluster))),
-            max(len(tweets_from_cluster), 0.1*len(tweets_from_cluster)),
-            tfidf)
-        text = " ".join([t['text'] for t in top_tweets])
-
+        n_top = max(
+            min(len(tweet_w_score), MIN_N_TOP_TWEETS),
+            int(TOP_TWEETS_FILTER*len(tweet_w_score)))
+        top_tweets = get_top_tweets(tweet_w_score, n=n_top)
+        text = ".\n".join([t['text'] for t in top_tweets])
+        print(text)
         summerize = summarize(text, word_count=n_words_summaries)
         print("-----------------------------------------")
         print("Summarizing tweets of class", i, end="")
+        dict_summaries[str(i)] = [None, None]
         if labeled:
             truevals = [t['trueval'] for t in tweets_from_cluster]
             mcommon = FreqDist(truevals)
-
+            dict_summaries[str(i)][1] = dict()
             print(", where: ")
             for m in mcommon.keys():
-                print("\t * {:.2f}".format(mcommon.freq(m)*100),
-                      "% of the samples were originally labeled as \"",
-                      mapping[m], "\", ")
+                string = "\t * {:.2f}".format(mcommon.freq(
+                    m)*100) + "% of the samples were originally labeled as \""\
+                    + str(mapping[m]) + "\", "
+                # Save the frequency of the label "mapping[m]" in position
+                # 1 of the tuple assigned to the summaries of the cluster i.
+                # first value of the tuple are the actual summaries:
+                dict_summaries[str(i)][1][mapping[m]] = mcommon.freq(m)*100
+                print(string)
         else:
             print()
         print(summerize)
+        dict_summaries[str(i)][0] = summerize
         print("-----------------------------------------")
         print()
+    with open(LAST_SUMMARIES_ROUTE, "a+") as f:
+        print(dict_summaries, file=f)
